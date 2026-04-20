@@ -179,16 +179,18 @@ function RegisterForm() {
             <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
               Instagram
             </label>
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]">
+            <div className="flex gap-2 items-stretch">
+              <div className="input-field !w-auto !px-3 flex items-center justify-center text-[var(--text-secondary)] shrink-0">
                 @
-              </span>
+              </div>
               <input
                 type="text"
                 placeholder="your_handle"
                 value={form.instagram}
-                onChange={(e) => update("instagram", e.target.value)}
-                className="input-field pl-8"
+                onChange={(e) =>
+                  update("instagram", e.target.value.replace(/^@/, ""))
+                }
+                className="input-field min-w-0 flex-1"
               />
             </div>
           </div>
