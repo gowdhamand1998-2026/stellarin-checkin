@@ -212,6 +212,9 @@ function RegisterForm() {
               <p className="text-xs text-[var(--text-muted)] mt-0.5">
                 We&apos;ll add you to relevant groups based on your skill level
               </p>
+              <p className="text-xs text-[var(--text-muted)] mt-1.5 italic">
+                By checking in, you agree to receive updates via WhatsApp/SMS.
+              </p>
             </div>
           </label>
 
@@ -246,10 +249,6 @@ function RegisterForm() {
             "Complete Check-In"
           )}
         </button>
-
-        <p className="text-xs text-[var(--text-muted)] text-center">
-          By checking in, you agree to receive updates via WhatsApp/SMS
-        </p>
       </form>
     </div>
   );
