@@ -19,8 +19,8 @@ function RegisterForm() {
     preferredLocation: "",
     preferredSport: "",
     instagram: "",
-    whatsappOptIn: false,
-    imageConsent: false,
+    whatsappOptIn: true,
+    imageConsent: true,
   });
 
   if (!location) {
