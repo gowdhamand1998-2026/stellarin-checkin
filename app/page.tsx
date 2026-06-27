@@ -70,10 +70,10 @@ export default function LandingPage() {
           backgroundPosition: "center 22%",
         }}
       >
-        {/* Stellarin logo in the top-left corner (black wordmark) */}
+        {/* Stellarin logo in the top-left corner (brand positive wordmark) */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/stellarin-logo-dark.svg"
+          src="/stellarin-logo-positive.svg"
           alt="Stellarin"
           className="absolute left-0 top-0 w-56 drop-shadow-[0_1px_10px_rgba(255,255,255,0.6)]"
         />
