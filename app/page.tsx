@@ -60,12 +60,28 @@ export default function LandingPage() {
 
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-[460px] flex-col bg-[var(--bg-primary)]">
-      {/* Header — Stellarin logo pinned top-left, above the photo */}
-      <header className="shrink-0 px-4 pt-4 pb-3">
+      {/* Hero photo — full-bleed from the very top, logo overlaid top-left.
+          Drop your photo in at public/hero.jpg.
+          Falls back to the flow pattern on forest until you add it. */}
+      <div
+        className="relative min-h-[52dvh] flex-1 bg-[var(--bg-elevated)] bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url(/hero.jpg), url(/flow-pattern.svg)" }}
+      >
+        {/* Gradient fade into the sheet below */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-[var(--bg-elevated)]" />
+        {/* Headline sits at the bottom of the image, over the gradient */}
+        <h1 className="absolute inset-x-0 bottom-0 px-6 pb-7 text-[2rem] font-bold leading-[1.1] tracking-tight text-[var(--text-primary)] drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]">
+          Meet. Play. <span className="accent-italic">Stay.</span>
+        </h1>
+      </div>
+
+      {/* Content sheet — hugs its content and sits at the bottom */}
+      <div className="page-enter sheet relative z-10 -mt-6 flex shrink-0 flex-col gap-6 px-6 pb-10 pt-7">
+        {/* Stellarin logo leads the form (sand-tinted for the dark sheet) */}
         <div
           role="img"
           aria-label="Stellarin"
-          className="h-14 w-40 bg-[var(--text-primary)]"
+          className="h-12 w-44 bg-[var(--text-primary)]"
           style={{
             maskImage: "url(/stellarin-logo.svg)",
             WebkitMaskImage: "url(/stellarin-logo.svg)",
@@ -77,23 +93,6 @@ export default function LandingPage() {
             WebkitMaskPosition: "left center",
           }}
         />
-      </header>
-
-      {/* Hero photo — drop your photo in at public/hero.jpg.
-          Falls back to the flow pattern on forest until you add it. */}
-      <div
-        className="relative min-h-[40dvh] flex-1 bg-[var(--bg-elevated)] bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url(/hero.jpg), url(/flow-pattern.svg)" }}
-      >
-        {/* Gradient fade into the sheet below */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-[var(--bg-elevated)]" />
-      </div>
-
-      {/* Content sheet — hugs its content and sits at the bottom */}
-      <div className="page-enter sheet relative z-10 -mt-6 flex shrink-0 flex-col gap-6 px-6 pb-10 pt-7">
-        <h1 className="text-[2rem] font-bold leading-[1.1] tracking-tight text-[var(--text-primary)]">
-          Meet. Play. <span className="accent-italic">Stay.</span>
-        </h1>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 text-left">
           {/* Location picker */}
