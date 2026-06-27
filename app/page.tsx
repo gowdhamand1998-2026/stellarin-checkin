@@ -60,25 +60,37 @@ export default function LandingPage() {
 
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-[460px] flex-col bg-[var(--bg-primary)]">
-      {/* Hero — drop your photo in at public/hero.jpg.
+      {/* Header — Stellarin logo pinned top-left, above the photo */}
+      <header className="shrink-0 px-4 pt-4 pb-3">
+        <div
+          role="img"
+          aria-label="Stellarin"
+          className="h-14 w-40 bg-[var(--text-primary)]"
+          style={{
+            maskImage: "url(/stellarin-logo.svg)",
+            WebkitMaskImage: "url(/stellarin-logo.svg)",
+            maskRepeat: "no-repeat",
+            WebkitMaskRepeat: "no-repeat",
+            maskSize: "contain",
+            WebkitMaskSize: "contain",
+            maskPosition: "left center",
+            WebkitMaskPosition: "left center",
+          }}
+        />
+      </header>
+
+      {/* Hero photo — drop your photo in at public/hero.jpg.
           Falls back to the flow pattern on forest until you add it. */}
       <div
-        className="relative min-h-[320px] flex-1 bg-[var(--bg-elevated)] bg-cover bg-center bg-no-repeat"
+        className="relative min-h-[40dvh] flex-1 bg-[var(--bg-elevated)] bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url(/hero.jpg), url(/flow-pattern.svg)" }}
       >
-        {/* Logo sits on the image — dark/positive version for the bright sky */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/stellarin-logo-dark.svg"
-          alt="Stellarin"
-          className="absolute left-5 top-5 w-40 drop-shadow-[0_1px_8px_rgba(255,255,255,0.55)]"
-        />
         {/* Gradient fade into the sheet below */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-[var(--bg-elevated)]" />
       </div>
 
       {/* Content sheet — hugs its content and sits at the bottom */}
-      <div className="page-enter sheet relative z-10 -mt-6 flex shrink-0 flex-col gap-7 px-6 pb-12 pt-9">
+      <div className="page-enter sheet relative z-10 -mt-6 flex shrink-0 flex-col gap-6 px-6 pb-10 pt-7">
         <h1 className="text-[2rem] font-bold leading-[1.1] tracking-tight text-[var(--text-primary)]">
           Meet. Play. <span className="accent-italic">Stay.</span>
         </h1>
