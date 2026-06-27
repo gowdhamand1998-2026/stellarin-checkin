@@ -68,7 +68,7 @@ function ConfirmContent() {
   };
 
   return (
-    <div className="page-enter flex flex-col min-h-[80dvh] justify-center gap-8">
+    <div className="page-enter mx-auto flex min-h-dvh w-full max-w-[400px] flex-col justify-center gap-8 px-5 py-8">
       <div className="text-center space-y-2">
         <h1 className="text-2xl font-bold">Confirm your details</h1>
         <p className="text-[var(--text-secondary)] text-sm">

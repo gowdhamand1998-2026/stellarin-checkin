@@ -13,7 +13,7 @@ export default function LoginPage() {
   }, [router]);
 
   return (
-    <div className="flex items-center justify-center min-h-[60dvh]">
+    <div className="flex items-center justify-center min-h-dvh">
       <div className="spinner" />
     </div>
   );

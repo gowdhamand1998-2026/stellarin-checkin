@@ -91,7 +91,7 @@ function RegisterForm() {
   const SPORTS = ["Pickleball", "Tennis", "Badminton", "Padel"];
 
   return (
-    <div className="page-enter flex flex-col gap-7 py-4">
+    <div className="page-enter mx-auto flex min-h-dvh w-full max-w-[400px] flex-col gap-7 px-5 py-8">
       <div className="text-center space-y-1">
         <h1 className="text-2xl font-bold">Tell us about you</h1>
         <p className="text-[var(--text-secondary)] text-sm">
@@ -256,7 +256,7 @@ export default function RegisterPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex items-center justify-center min-h-[60dvh]">
+        <div className="flex items-center justify-center min-h-dvh">
           <div className="spinner" />
         </div>
       }

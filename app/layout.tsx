@@ -37,11 +37,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${playfair.variable} h-full antialiased`}>
       <body className="min-h-dvh flex flex-col bg-gradient-animated" suppressHydrationWarning>
-        <main className="flex-1 flex flex-col items-center justify-center px-5 py-8">
-          <div className="w-full max-w-[400px]">
-            {children}
-          </div>
-        </main>
+        {children}
       </body>
     </html>
   );

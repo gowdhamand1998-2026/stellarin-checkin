@@ -29,7 +29,7 @@ function SuccessContent() {
   const formattedTime = time ? formatCheckinTime(time) : "";
 
   return (
-    <div className="page-enter flex flex-col items-center text-center gap-10 py-10">
+    <div className="page-enter mx-auto flex min-h-dvh w-full max-w-[400px] flex-col items-center justify-center text-center gap-10 px-5 py-10">
       {/* Checkmark */}
       <div className="animate-scale-in">
         <div className="w-24 h-24 rounded-full bg-[var(--accent)]/15 flex items-center justify-center animate-pulse-glow">
