@@ -116,7 +116,7 @@ function RegisterForm() {
         {/* Skill — pills */}
         <div>
           <label className="block text-sm font-medium mb-2">Skill Level</label>
-          <div className="flex gap-1.5 overflow-x-auto no-scrollbar -mx-5 px-5">
+          <div className="flex flex-wrap gap-1.5">
             {SKILLS.map((s) => (
               <button
                 key={s}
@@ -144,7 +144,7 @@ function RegisterForm() {
             <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
               Preferred Sport
             </label>
-            <div className="flex gap-1.5 overflow-x-auto no-scrollbar -mx-4 px-4">
+            <div className="flex flex-wrap gap-1.5">
               {SPORTS.map((s) => (
                 <button
                   key={s}

@@ -66,7 +66,7 @@ export default function LandingPage() {
       <div
         className="relative min-h-[52dvh] flex-1 bg-[var(--bg-elevated)] bg-cover bg-no-repeat"
         style={{
-          backgroundImage: "url(/hero-3.png), url(/flow-pattern.svg)",
+          backgroundImage: "url(/hero-3.jpg), url(/flow-pattern.svg)",
           backgroundPosition: "center 18%",
         }}
       >
@@ -78,15 +78,15 @@ export default function LandingPage() {
           className="absolute left-5 top-5 w-36 drop-shadow-[0_1px_10px_rgba(255,255,255,0.6)]"
         />
         {/* Gradient fade into the sheet below */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-[var(--bg-elevated)]" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-[var(--bg-elevated)]" />
+        {/* Headline centered on the gradient, just above the sheet */}
+        <h1 className="absolute inset-x-0 bottom-0 px-6 pb-9 text-center text-[2rem] font-bold leading-[1.1] tracking-tight text-[var(--text-primary)] drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]">
+          Meet. Play. <span className="accent-italic">Stay.</span>
+        </h1>
       </div>
 
       {/* Content sheet — hugs its content and sits at the bottom */}
-      <div className="page-enter sheet relative z-10 -mt-6 flex shrink-0 flex-col gap-6 px-6 pb-10 pt-7">
-        <h1 className="text-[2rem] font-bold leading-[1.1] tracking-tight text-[var(--text-primary)]">
-          Meet. Play. <span className="accent-italic">Stay.</span>
-        </h1>
-
+      <div className="page-enter sheet relative z-10 -mt-6 flex shrink-0 flex-col px-6 pb-7 pt-6">
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 text-left">
           {/* Location picker */}
           <div>
