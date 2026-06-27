@@ -1,23 +1,28 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --color-amber-brand: #f59e0b;
-  --color-amber-brand-hover: #d97706;
+  --font-sans: var(--font-space-grotesk);
+  --font-accent: var(--font-playfair);
+  /* Stellarin brand palette */
+  --color-forest: #262d25;
+  --color-sand: #f3f1e9;
+  --color-sea: #02f5bc;
 }
 
 :root {
-  --bg-primary: #0f0f1a;
-  --bg-card: rgba(255, 255, 255, 0.04);
-  --bg-card-hover: rgba(255, 255, 255, 0.07);
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --accent: #f59e0b;
-  --accent-glow: rgba(245, 158, 11, 0.15);
-  --success: #22c55e;
+  /* Brand core — Forest green base, Sand text, Sea mint accent */
+  --bg-primary: #1c211b; /* deep forest for page base */
+  --bg-elevated: #262d25; /* brand Forest green for surfaces */
+  --bg-card: rgba(243, 241, 233, 0.045);
+  --bg-card-hover: rgba(243, 241, 233, 0.08);
+  --border-subtle: rgba(243, 241, 233, 0.1);
+  --text-primary: #f3f1e9; /* Sand */
+  --text-secondary: rgba(243, 241, 233, 0.62);
+  --text-muted: rgba(243, 241, 233, 0.38);
+  --accent: #02f5bc; /* Sea */
+  --accent-hover: #19f7c4;
+  --accent-glow: rgba(2, 245, 188, 0.1);
+  --success: #02f5bc;
 }
 
 body {
@@ -27,11 +32,20 @@ body {
   min-height: 100dvh;
 }
 
-/* Subtle background glow — just a faint top-corner warmth, no bottom tint */
+/* Accent words — Playfair Display Bold Italic, per brand typography */
+.accent-italic {
+  font-family: var(--font-accent), Georgia, serif;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* Flat deep-forest base with just a faint mint halo behind the logo up top */
 .bg-gradient-animated {
   background:
-    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(245, 158, 11, 0.04) 0%, transparent 70%),
+    radial-gradient(80% 50% at 50% -10%, rgba(2, 245, 188, 0.04) 0%, transparent 60%),
     var(--bg-primary);
+  background-attachment: fixed;
 }
 
 /* Glass card effect */
@@ -44,7 +58,7 @@ body {
 
 /* Input styling */
 .input-field {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(243, 241, 233, 0.05);
   border: 1px solid var(--border-subtle);
   border-radius: 0.75rem;
   padding: 0.875rem 1rem;
@@ -66,7 +80,7 @@ body {
 
 /* Select styling */
 .select-field {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(243, 241, 233, 0.05);
   border: 1px solid var(--border-subtle);
   border-radius: 0.75rem;
   padding: 0.875rem 1rem;
@@ -76,7 +90,7 @@ body {
   transition: border-color 0.2s, box-shadow 0.2s;
   outline: none;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a8b3a3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 1rem center;
   padding-right: 2.5rem;
@@ -93,28 +107,134 @@ body {
 }
 
 .select-field option {
-  background: #1e1e2e;
+  background: #262d25;
   color: var(--text-primary);
 }
 
-/* Primary button */
+/* ---- Dark content sheet (landing) ---- */
+.sheet {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border-radius: 1.75rem 1.75rem 0 0;
+  box-shadow: 0 -10px 34px rgba(0, 0, 0, 0.45);
+}
+
+.input-light {
+  background: #ffffff;
+  border: 1.5px solid rgba(38, 45, 37, 0.22);
+  border-radius: 0.75rem;
+  padding: 0.875rem 1rem;
+  color: #1c211b;
+  font-size: 1rem;
+  width: 100%;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.input-light::placeholder {
+  color: rgba(38, 45, 37, 0.4);
+}
+
+.input-light:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.select-light {
+  background: #ffffff;
+  border: 1.5px solid rgba(38, 45, 37, 0.22);
+  border-radius: 0.75rem;
+  padding: 0.875rem 1rem;
+  color: #1c211b;
+  font-size: 1rem;
+  width: 100%;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235b6358' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+}
+
+.select-light:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.select-light.is-placeholder {
+  color: rgba(38, 45, 37, 0.4);
+}
+
+.spinner-dark {
+  border: 3px solid rgba(20, 39, 31, 0.25);
+  border-top-color: #0e1a14;
+  border-radius: 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+  animation: spin 0.6s linear infinite;
+}
+
+/* Selectable pills (skill, sport) */
+.pill {
+  padding: 0.3rem 0.7rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(243, 241, 233, 0.2);
+  background: rgba(243, 241, 233, 0.09);
+  color: var(--text-primary);
+  font-size: 0.76rem;
+  font-weight: 500;
+  line-height: 1.1;
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+/* Hide scrollbar on horizontally-scrolling rows */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.pill:hover {
+  border-color: var(--accent);
+  background: rgba(2, 245, 188, 0.08);
+}
+
+.pill-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #0e1a14;
+  font-weight: 600;
+}
+
+.pill-active:hover {
+  color: #0e1a14;
+}
+
+/* Primary button — solid mint, clean and flat */
 .btn-primary {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
-  color: #0f0f1a;
+  background: var(--accent);
+  color: #0e1a14;
   font-weight: 600;
   font-size: 1.05rem;
   padding: 0.9rem 2rem;
   border-radius: 0.75rem;
   border: none;
   cursor: pointer;
-  transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s, opacity 0.2s;
   width: 100%;
   letter-spacing: 0.01em;
 }
 
 .btn-primary:hover {
+  background: var(--accent-hover);
   transform: translateY(-1px);
-  box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
+  box-shadow: 0 6px 18px rgba(2, 245, 188, 0.16);
 }
 
 .btn-primary:active {
@@ -135,7 +255,7 @@ body {
   height: 1.25rem;
   border: 2px solid var(--border-subtle);
   border-radius: 0.375rem;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(243, 241, 233, 0.05);
   cursor: pointer;
   transition: all 0.2s;
   flex-shrink: 0;
@@ -154,7 +274,7 @@ body {
   top: 1px;
   width: 5px;
   height: 10px;
-  border: solid #0f0f1a;
+  border: solid #14271f;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
@@ -188,8 +308,8 @@ body {
 
 /* Pulse glow for success */
 @keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 20px rgba(34, 197, 94, 0.2); }
-  50% { box-shadow: 0 0 40px rgba(34, 197, 94, 0.4); }
+  0%, 100% { box-shadow: 0 0 0 rgba(2, 245, 188, 0); }
+  50% { box-shadow: 0 0 28px rgba(2, 245, 188, 0.22); }
 }
 
 .animate-pulse-glow {

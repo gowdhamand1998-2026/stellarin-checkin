@@ -87,59 +87,80 @@ function RegisterForm() {
     }
   };
 
+  const SKILLS = ["Beginner", "Intermediate", "Advanced", "Pro"];
+  const SPORTS = ["Pickleball", "Tennis", "Badminton", "Padel"];
+
   return (
-    <div className="page-enter flex flex-col gap-6 py-4">
+    <div className="page-enter flex flex-col gap-7 py-4">
       <div className="text-center space-y-1">
         <h1 className="text-2xl font-bold">Tell us about you</h1>
         <p className="text-[var(--text-secondary)] text-sm">
-          Checking in at <span className="text-amber-400 font-medium">{location}</span>
+          Checking in at <span className="text-[var(--accent)] font-medium">{location}</span>
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-5">
-        {/* Required fields */}
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-2">Full Name</label>
-            <input
-              type="text"
-              placeholder="Your name"
-              value={form.fullName}
-              onChange={(e) => update("fullName", e.target.value)}
-              className="input-field"
-              autoFocus
-            />
-          </div>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Name */}
+        <div>
+          <label className="block text-sm font-medium mb-2">Full Name</label>
+          <input
+            type="text"
+            placeholder="Your name"
+            value={form.fullName}
+            onChange={(e) => update("fullName", e.target.value)}
+            className="input-field"
+            autoFocus
+          />
+        </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-2">Skill Level</label>
-            <select
-              value={form.skillLevel}
-              onChange={(e) => update("skillLevel", e.target.value)}
-              className={`select-field ${form.skillLevel ? "" : "is-placeholder"}`}
-            >
-              <option value="" disabled>
-                Select your level
-              </option>
-              <option value="Beginner">Beginner</option>
-              <option value="Intermediate">Intermediate</option>
-              <option value="Advanced">Advanced</option>
-              <option value="Pro">Pro</option>
-            </select>
+        {/* Skill — pills */}
+        <div>
+          <label className="block text-sm font-medium mb-2">Skill Level</label>
+          <div className="flex gap-1.5 overflow-x-auto no-scrollbar -mx-5 px-5">
+            {SKILLS.map((s) => (
+              <button
+                key={s}
+                type="button"
+                onClick={() => {
+                  update("skillLevel", s);
+                  setError("");
+                }}
+                className={`pill ${form.skillLevel === s ? "pill-active" : ""}`}
+              >
+                {s}
+              </button>
+            ))}
           </div>
         </div>
 
-        {/* Optional divider */}
-        <div className="flex items-center gap-3">
-          <div className="h-px flex-1 bg-[var(--border-subtle)]" />
-          <span className="text-xs text-[var(--text-muted)] uppercase tracking-wider">
+        {/* Optional fields — grouped in a box */}
+        <fieldset className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] px-4 pb-5 pt-3 space-y-6">
+          <legend className="px-2 text-xs text-[var(--text-muted)] uppercase tracking-wider">
             Optional
-          </span>
-          <div className="h-px flex-1 bg-[var(--border-subtle)]" />
-        </div>
+          </legend>
 
-        {/* Optional fields */}
-        <div className="space-y-4">
+          {/* Preferred Sport — pills */}
+          <div>
+            <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
+              Preferred Sport
+            </label>
+            <div className="flex gap-1.5 overflow-x-auto no-scrollbar -mx-4 px-4">
+              {SPORTS.map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  onClick={() =>
+                    update("preferredSport", form.preferredSport === s ? "" : s)
+                  }
+                  className={`pill ${form.preferredSport === s ? "pill-active" : ""}`}
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Preferred Location */}
           <div>
             <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
               Preferred Location
@@ -158,23 +179,7 @@ function RegisterForm() {
             </select>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-              Preferred Sport
-            </label>
-            <select
-              value={form.preferredSport}
-              onChange={(e) => update("preferredSport", e.target.value)}
-              className={`select-field ${form.preferredSport ? "" : "is-placeholder"}`}
-            >
-              <option value="">Select sport</option>
-              <option value="Pickleball">Pickleball</option>
-              <option value="Tennis">Tennis</option>
-              <option value="Badminton">Badminton</option>
-              <option value="Padel">Padel</option>
-            </select>
-          </div>
-
+          {/* Instagram */}
           <div>
             <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
               Instagram
@@ -194,10 +199,10 @@ function RegisterForm() {
               />
             </div>
           </div>
-        </div>
+        </fieldset>
 
-        {/* Checkboxes */}
-        <div className="space-y-4 pt-1">
+        {/* Sticky footer — consent + button stay pinned while the form scrolls */}
+        <div className="sticky bottom-0 -mx-5 mt-2 space-y-3.5 border-t border-[var(--border-subtle)] bg-[var(--bg-primary)] px-5 pb-5 pt-4">
           <label className="flex items-start gap-3 cursor-pointer">
             <input
               type="checkbox"
@@ -206,49 +211,42 @@ function RegisterForm() {
               className="checkbox-custom mt-0.5"
             />
             <div>
-              <span className="text-sm font-medium">
-                Find games & players near you on WhatsApp
+              <span className="text-sm">
+                Add me to WhatsApp groups to find games & players
               </span>
               <p className="text-xs text-[var(--text-muted)] mt-0.5">
-                We&apos;ll add you to relevant groups based on your skill level
-              </p>
-              <p className="text-xs text-[var(--text-muted)] mt-1.5 italic">
-                By checking in, you agree to receive updates via WhatsApp/SMS.
+                By checking in, you agree to receive updates via WhatsApp.
               </p>
             </div>
           </label>
 
-          <label className="flex items-start gap-3 cursor-pointer">
+          <label className="flex items-center gap-3 cursor-pointer">
             <input
               type="checkbox"
               checked={form.imageConsent}
               onChange={(e) => update("imageConsent", e.target.checked)}
-              className="checkbox-custom mt-0.5"
+              className="checkbox-custom"
             />
-            <div>
-              <span className="text-sm font-medium">
-                You may use images taken during my play time
-              </span>
-            </div>
+            <span className="text-sm">Photos from my play time may be used</span>
           </label>
+
+          {error && <p className="text-red-400 text-sm">{error}</p>}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn-primary flex items-center justify-center gap-2"
+          >
+            {loading ? (
+              <>
+                <div className="spinner" />
+                Registering...
+              </>
+            ) : (
+              "Complete Check-In"
+            )}
+          </button>
         </div>
-
-        {error && <p className="text-red-400 text-sm">{error}</p>}
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="btn-primary flex items-center justify-center gap-2"
-        >
-          {loading ? (
-            <>
-              <div className="spinner" />
-              Registering...
-            </>
-          ) : (
-            "Complete Check-In"
-          )}
-        </button>
       </form>
     </div>
   );

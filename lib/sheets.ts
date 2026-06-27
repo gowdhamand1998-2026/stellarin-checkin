@@ -1,17 +1,24 @@
-import { google } from "googleapis";
+import { google, sheets_v4 } from "googleapis";
 
-function getAuth() {
-  return new google.auth.GoogleAuth({
+// Build the auth + sheets client ONCE and reuse them across all calls and
+// requests. The previous code created a new GoogleAuth on every call, which
+// forced a fresh Google token handshake each time (a network round-trip).
+// A single cached client fetches the token once and reuses it until expiry.
+let cachedSheets: sheets_v4.Sheets | null = null;
+
+function getSheets(): sheets_v4.Sheets {
+  if (cachedSheets) return cachedSheets;
+
+  const auth = new google.auth.GoogleAuth({
     credentials: {
       client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
       private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
     },
     scopes: ["https://www.googleapis.com/auth/spreadsheets"],
   });
-}
 
-function getSheets() {
-  return google.sheets({ version: "v4", auth: getAuth() });
+  cachedSheets = google.sheets({ version: "v4", auth });
+  return cachedSheets;
 }
 
 const SHEET_ID = process.env.GOOGLE_SHEET_ID!;
@@ -113,10 +120,17 @@ async function generateUniqueId(): Promise<string> {
   return `STL-${String(next).padStart(3, "0")}`;
 }
 
+// Once we've verified the tabs/headers exist during this server's lifetime,
+// there's no need to re-check on every request. These flags skip the redundant
+// network reads after the first successful check.
+let logSheetReady = false;
+let headersReady = false;
+
 /**
  * Ensure the CheckInLog tab exists and has headers.
  */
 async function ensureLogSheet(): Promise<void> {
+  if (logSheetReady) return;
   const sheets = getSheets();
 
   const meta = await sheets.spreadsheets.get({ spreadsheetId: SHEET_ID });
@@ -160,6 +174,8 @@ async function ensureLogSheet(): Promise<void> {
       },
     });
   }
+
+  logSheetReady = true;
 }
 
 /**
@@ -260,32 +276,34 @@ export async function checkInExistingUser(
       const now = new Date();
       const formattedTime = formatForSheet(now);
 
-      // Columns I (Check-In Count) and J (Last Check-In)
-      await sheets.spreadsheets.values.update({
-        spreadsheetId: SHEET_ID,
-        range: `${SHEET_NAME}!I${rowIndex}:J${rowIndex}`,
-        valueInputOption: "USER_ENTERED",
-        requestBody: {
-          values: [[currentCount + 1, formattedTime]],
-        },
-      });
-
       const name = rows[i][COLUMNS.NAME];
       const skillLevel = rows[i][COLUMNS.SKILL];
       const uniqueId = rows[i][COLUMNS.UNIQUE_ID] || "";
       const homeLocation = rows[i][COLUMNS.HOME_LOCATION] || "";
       const loggedLocation = checkinLocation || homeLocation;
 
-      await appendCheckinLog({
-        timestamp: formattedTime,
-        phone,
-        name,
-        uniqueId,
-        skillLevel,
-        location: loggedLocation,
-        preferredSport: rows[i][COLUMNS.SPORT],
-        type: "returning",
-      });
+      // Update the count/timestamp and append the log entry concurrently.
+      await Promise.all([
+        // Columns I (Check-In Count) and J (Last Check-In)
+        sheets.spreadsheets.values.update({
+          spreadsheetId: SHEET_ID,
+          range: `${SHEET_NAME}!I${rowIndex}:J${rowIndex}`,
+          valueInputOption: "USER_ENTERED",
+          requestBody: {
+            values: [[currentCount + 1, formattedTime]],
+          },
+        }),
+        appendCheckinLog({
+          timestamp: formattedTime,
+          phone,
+          name,
+          uniqueId,
+          skillLevel,
+          location: loggedLocation,
+          preferredSport: rows[i][COLUMNS.SPORT],
+          type: "returning",
+        }),
+      ]);
 
       return {
         name,
@@ -318,46 +336,50 @@ export async function registerUser(data: {
   const formattedTime = formatForSheet(now);
   const uniqueId = await generateUniqueId();
 
-  await sheets.spreadsheets.values.append({
-    spreadsheetId: SHEET_ID,
-    range: SHEET_RANGE,
-    valueInputOption: "USER_ENTERED",
-    requestBody: {
-      values: [
-        [
-          data.phone,
-          data.fullName,
-          data.skillLevel,
-          data.homeLocation || "",
-          data.preferredSport || "",
-          data.instagram || "",
-          data.whatsappOptIn ? "Yes" : "No",
-          data.imageConsent ? "Yes" : "No",
-          1,
-          formattedTime,
-          formattedTime,
-          uniqueId,
-          data.preferredLocation || "",
+  // The Database row append and the CheckInLog append are independent, so run
+  // them at the same time instead of waiting for one then the other.
+  await Promise.all([
+    sheets.spreadsheets.values.append({
+      spreadsheetId: SHEET_ID,
+      range: SHEET_RANGE,
+      valueInputOption: "USER_ENTERED",
+      requestBody: {
+        values: [
+          [
+            data.phone,
+            data.fullName,
+            data.skillLevel,
+            data.homeLocation || "",
+            data.preferredSport || "",
+            data.instagram || "",
+            data.whatsappOptIn ? "Yes" : "No",
+            data.imageConsent ? "Yes" : "No",
+            1,
+            formattedTime,
+            formattedTime,
+            uniqueId,
+            data.preferredLocation || "",
+          ],
         ],
-      ],
-    },
-  });
-
-  await appendCheckinLog({
-    timestamp: formattedTime,
-    phone: data.phone,
-    name: data.fullName,
-    uniqueId,
-    skillLevel: data.skillLevel,
-    location: data.checkinLocation || data.homeLocation,
-    preferredSport: data.preferredSport,
-    type: "new",
-  });
+      },
+    }),
+    appendCheckinLog({
+      timestamp: formattedTime,
+      phone: data.phone,
+      name: data.fullName,
+      uniqueId,
+      skillLevel: data.skillLevel,
+      location: data.checkinLocation || data.homeLocation,
+      preferredSport: data.preferredSport,
+      type: "new",
+    }),
+  ]);
 
   return { uniqueId, checkinTime: now.toISOString() };
 }
 
 export async function ensureHeaders() {
+  if (headersReady) return;
   const sheets = getSheets();
   const res = await sheets.spreadsheets.values.get({
     spreadsheetId: SHEET_ID,
@@ -380,4 +402,6 @@ export async function ensureHeaders() {
       },
     });
   }
+
+  headersReady = true;
 }

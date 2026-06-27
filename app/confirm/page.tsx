@@ -121,7 +121,7 @@ function DetailRow({
       <span className="text-sm text-[var(--text-secondary)]">{label}</span>
       <span
         className={`text-sm font-medium ${
-          highlight ? "text-amber-400" : "text-[var(--text-primary)]"
+          highlight ? "text-[var(--accent)]" : "text-[var(--text-primary)]"
         }`}
       >
         {value}

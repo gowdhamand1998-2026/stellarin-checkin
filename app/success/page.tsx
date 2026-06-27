@@ -32,14 +32,14 @@ function SuccessContent() {
     <div className="page-enter flex flex-col items-center text-center gap-10 py-10">
       {/* Checkmark */}
       <div className="animate-scale-in">
-        <div className="w-24 h-24 rounded-full bg-green-500/15 flex items-center justify-center animate-pulse-glow">
-          <div className="w-16 h-16 rounded-full bg-green-500 flex items-center justify-center">
+        <div className="w-24 h-24 rounded-full bg-[var(--accent)]/15 flex items-center justify-center animate-pulse-glow">
+          <div className="w-16 h-16 rounded-full bg-[var(--accent)] flex items-center justify-center">
             <svg
               width="32"
               height="32"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="white"
+              stroke="#14271f"
               strokeWidth="3"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -62,7 +62,7 @@ function SuccessContent() {
         <p className="text-[var(--text-secondary)]">
           Head to your court at{" "}
           {location ? (
-            <span className="text-amber-400 font-medium">{location}</span>
+            <span className="text-[var(--accent)] font-medium">{location}</span>
           ) : (
             "your location"
           )}
@@ -89,7 +89,7 @@ function SuccessContent() {
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="text-amber-400 shrink-0"
+            className="text-[var(--accent)] shrink-0"
           >
             <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
           </svg>
@@ -112,7 +112,7 @@ function SuccessContent() {
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="text-amber-400 shrink-0 mt-0.5"
+            className="text-[var(--accent)] shrink-0 mt-0.5"
           >
             <path d="M12 2L14.09 8.26L20 9.27L15.55 13.97L16.91 20L12 16.9L7.09 20L8.45 13.97L4 9.27L9.91 8.26L12 2Z" />
           </svg>
@@ -140,7 +140,7 @@ function SuccessContent() {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="text-amber-400 shrink-0 mt-0.5"
+              className="text-[var(--accent)] shrink-0 mt-0.5"
             >
               <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
               <circle cx="9" cy="7" r="4" />
@@ -161,7 +161,7 @@ function SuccessContent() {
             href="https://chat.whatsapp.com/JRhgIwzkPZs3zhpvTWi1bP"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 w-full px-5 py-2.5 rounded-lg bg-[#25D366]/15 border border-[#25D366]/30 text-[#25D366] font-semibold text-sm hover:bg-[#25D366]/25 transition-colors"
+            className="inline-flex items-center justify-center gap-2 w-full px-5 py-2.5 rounded-lg bg-[var(--accent)]/10 border border-[var(--accent)]/30 text-[var(--accent)] font-semibold text-sm hover:bg-[var(--accent)]/20 transition-colors"
           >
             <svg
               width="16"

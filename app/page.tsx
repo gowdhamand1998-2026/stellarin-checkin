@@ -59,105 +59,96 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="page-enter flex flex-col items-center text-center min-h-[85dvh] justify-center gap-8">
-      {/* Logo */}
-      <div className="flex flex-col items-center gap-3">
-        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/20">
-          <svg
-            width="32"
-            height="32"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M12 2L14.09 8.26L20 9.27L15.55 13.97L16.91 20L12 16.9L7.09 20L8.45 13.97L4 9.27L9.91 8.26L12 2Z"
-              fill="#0f0f1a"
-              stroke="#0f0f1a"
-              strokeWidth="1.5"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </div>
-        <h1 className="text-xl font-bold tracking-tight">STELLARIN</h1>
+    <div className="mx-auto flex min-h-screen max-w-[460px] flex-col bg-[var(--bg-primary)]">
+      {/* Hero — drop your photo in at public/hero.jpg.
+          Falls back to the flow pattern on forest until you add it. */}
+      <div
+        className="relative min-h-[320px] flex-1 bg-[var(--bg-elevated)] bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url(/hero.jpg), url(/flow-pattern.svg)" }}
+      >
+        {/* Logo sits on the image — dark/positive version for the bright sky */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/stellarin-logo-dark.svg"
+          alt="Stellarin"
+          className="absolute left-0 top-0 w-44 drop-shadow-[0_1px_8px_rgba(255,255,255,0.55)]"
+        />
+        {/* Gradient fade into the sheet below */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-[var(--bg-elevated)]" />
       </div>
 
-      {/* Copy */}
-      <div className="space-y-2">
-        <h2 className="text-2xl font-bold leading-tight">
-          Quick check-in
-        </h2>
-        <p className="text-[var(--text-secondary)] text-sm">
-          Takes 10 seconds
-        </p>
-      </div>
+      {/* Content sheet — hugs its content and sits at the bottom */}
+      <div className="page-enter sheet relative z-10 -mt-6 flex shrink-0 flex-col gap-7 px-6 pb-12 pt-9">
+        <h1 className="text-[2rem] font-bold leading-[1.1] tracking-tight text-[var(--text-primary)]">
+          Meet. Play. <span className="accent-italic">Stay.</span>
+        </h1>
 
-      {/* Form */}
-      <form onSubmit={handleSubmit} className="w-full space-y-5 text-left">
-        {/* Location picker */}
-        <div>
-          <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-            Location
-          </label>
-          <select
-            value={location}
-            onChange={(e) => {
-              setLocation(e.target.value);
-              setError("");
-            }}
-            className={`select-field ${location ? "" : "is-placeholder"}`}
-          >
-            <option value="" disabled>
-              Where are you playing today?
-            </option>
-            {LOCATIONS.map((loc) => (
-              <option key={loc} value={loc}>
-                {loc}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Phone */}
-        <div>
-          <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-            Phone Number
-          </label>
-          <div className="flex gap-2 items-stretch">
-            <div className="input-field !w-auto !px-3 flex items-center justify-center text-[var(--text-secondary)] shrink-0">
-              +91
-            </div>
-            <input
-              type="tel"
-              inputMode="numeric"
-              placeholder="Enter your phone number"
-              value={phone}
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5 text-left">
+          {/* Location picker */}
+          <div>
+            <label className="mb-2 block text-sm font-medium text-[var(--text-secondary)]">
+              Location
+            </label>
+            <select
+              value={location}
               onChange={(e) => {
-                setPhone(e.target.value.replace(/\D/g, "").slice(0, 10));
+                setLocation(e.target.value);
                 setError("");
               }}
-              className="input-field min-w-0 flex-1"
-            />
+              className={`select-field ${location ? "" : "is-placeholder"}`}
+            >
+              <option value="" disabled>
+                Where are you playing today?
+              </option>
+              {LOCATIONS.map((loc) => (
+                <option key={loc} value={loc}>
+                  {loc}
+                </option>
+              ))}
+            </select>
           </div>
-        </div>
 
-        {error && <p className="text-red-400 text-sm">{error}</p>}
+          {/* Phone */}
+          <div>
+            <label className="mb-2 block text-sm font-medium text-[var(--text-secondary)]">
+              Phone Number
+            </label>
+            <div className="flex items-stretch gap-2">
+              <div className="input-field !w-auto !px-3 flex shrink-0 items-center justify-center text-[var(--text-secondary)]">
+                +91
+              </div>
+              <input
+                type="tel"
+                inputMode="numeric"
+                placeholder="Enter your phone number"
+                value={phone}
+                onChange={(e) => {
+                  setPhone(e.target.value.replace(/\D/g, "").slice(0, 10));
+                  setError("");
+                }}
+                className="input-field min-w-0 flex-1"
+              />
+            </div>
+          </div>
 
-        <button
-          type="submit"
-          disabled={!canSubmit}
-          className="btn-primary flex items-center justify-center gap-2"
-        >
-          {loading ? (
-            <>
-              <div className="spinner" />
-              Checking...
-            </>
-          ) : (
-            "Start Check-In"
-          )}
-        </button>
-      </form>
+          {error && <p className="text-sm text-red-500">{error}</p>}
+
+          <button
+            type="submit"
+            disabled={!canSubmit}
+            className="btn-primary flex items-center justify-center gap-2"
+          >
+            {loading ? (
+              <>
+                <div className="spinner" />
+                Checking...
+              </>
+            ) : (
+              "Start Check-In"
+            )}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
