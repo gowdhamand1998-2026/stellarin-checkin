@@ -60,13 +60,11 @@ export default function LandingPage() {
 
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-[460px] flex-col bg-[var(--bg-primary)]">
-      {/* Hero photo — full-bleed from the very top, logo overlaid top-left.
-          Drop your photo in at public/hero.jpg.
-          Falls back to the flow pattern on forest until you add it. */}
+      {/* Hero photo — full-bleed from the very top, logo overlaid top-left. */}
       <div
         className="relative min-h-[52dvh] flex-1 bg-[var(--bg-elevated)] bg-cover bg-no-repeat"
         style={{
-          backgroundImage: "url(/hero-3.jpg), url(/flow-pattern.svg)",
+          backgroundImage: "url(/hero-3.jpg)",
           backgroundPosition: "center 18%",
         }}
       >
