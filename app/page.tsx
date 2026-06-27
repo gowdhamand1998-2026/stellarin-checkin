@@ -75,7 +75,7 @@ export default function LandingPage() {
         <img
           src="/stellarin-logo-dark.svg"
           alt="Stellarin"
-          className="absolute left-4 top-4 w-48 drop-shadow-[0_1px_10px_rgba(255,255,255,0.6)]"
+          className="absolute left-0 top-0 w-56 drop-shadow-[0_1px_10px_rgba(255,255,255,0.6)]"
         />
         {/* Gradient fade into the sheet below */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-[var(--bg-elevated)]" />
