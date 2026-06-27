@@ -59,7 +59,7 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="mx-auto flex min-h-screen max-w-[460px] flex-col bg-[var(--bg-primary)]">
+    <div className="mx-auto flex min-h-dvh w-full max-w-[460px] flex-col bg-[var(--bg-primary)]">
       {/* Hero — drop your photo in at public/hero.jpg.
           Falls back to the flow pattern on forest until you add it. */}
       <div
