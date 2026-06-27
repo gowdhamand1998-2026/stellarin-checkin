@@ -64,24 +64,18 @@ export default function LandingPage() {
           Drop your photo in at public/hero.jpg.
           Falls back to the flow pattern on forest until you add it. */}
       <div
-        className="relative min-h-[52dvh] flex-1 bg-[var(--bg-elevated)] bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url(/hero-2.png), url(/flow-pattern.svg)" }}
+        className="relative min-h-[52dvh] flex-1 bg-[var(--bg-elevated)] bg-cover bg-no-repeat"
+        style={{
+          backgroundImage: "url(/hero-2.png), url(/flow-pattern.svg)",
+          backgroundPosition: "center 22%",
+        }}
       >
-        {/* Stellarin logo in the top-left corner (sand-tinted for visibility) */}
-        <div
-          role="img"
-          aria-label="Stellarin"
-          className="absolute left-4 top-4 h-14 w-48 bg-[var(--text-primary)] drop-shadow-[0_2px_10px_rgba(0,0,0,0.45)]"
-          style={{
-            maskImage: "url(/stellarin-logo.svg)",
-            WebkitMaskImage: "url(/stellarin-logo.svg)",
-            maskRepeat: "no-repeat",
-            WebkitMaskRepeat: "no-repeat",
-            maskSize: "contain",
-            WebkitMaskSize: "contain",
-            maskPosition: "left center",
-            WebkitMaskPosition: "left center",
-          }}
+        {/* Stellarin logo in the top-left corner (black wordmark) */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/stellarin-logo-dark.svg"
+          alt="Stellarin"
+          className="absolute left-4 top-4 w-48 drop-shadow-[0_1px_10px_rgba(255,255,255,0.6)]"
         />
         {/* Gradient fade into the sheet below */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-[var(--bg-elevated)]" />
