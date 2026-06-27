@@ -134,7 +134,7 @@ function RegisterForm() {
         </div>
 
         {/* Optional fields — grouped in a box */}
-        <fieldset className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] px-4 pb-5 pt-3 space-y-6">
+        <fieldset className="min-w-0 w-full rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] px-4 pb-5 pt-3 space-y-6">
           <legend className="px-2 text-xs text-[var(--text-muted)] uppercase tracking-wider">
             Optional
           </legend>
