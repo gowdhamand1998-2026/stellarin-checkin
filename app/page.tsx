@@ -66,8 +66,8 @@ export default function LandingPage() {
       <div
         className="relative min-h-[52dvh] flex-1 bg-[var(--bg-elevated)] bg-cover bg-no-repeat"
         style={{
-          backgroundImage: "url(/hero-2.png), url(/flow-pattern.svg)",
-          backgroundPosition: "center 22%",
+          backgroundImage: "url(/hero-3.png), url(/flow-pattern.svg)",
+          backgroundPosition: "center 18%",
         }}
       >
         {/* Stellarin logo in the top-left corner (brand positive wordmark) */}
