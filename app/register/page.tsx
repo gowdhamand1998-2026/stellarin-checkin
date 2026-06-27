@@ -201,8 +201,8 @@ function RegisterForm() {
           </div>
         </fieldset>
 
-        {/* Sticky footer — consent + button stay pinned while the form scrolls */}
-        <div className="sticky bottom-0 -mx-5 mt-2 space-y-3.5 border-t border-[var(--border-subtle)] bg-[var(--bg-primary)] px-5 pb-5 pt-4">
+        {/* Consent + submit — in normal page flow */}
+        <div className="mt-2 space-y-3.5 pt-2">
           <label className="flex items-start gap-3 cursor-pointer">
             <input
               type="checkbox"
