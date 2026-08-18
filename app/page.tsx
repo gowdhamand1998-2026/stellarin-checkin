@@ -46,14 +46,20 @@ export default function LandingPage() {
           loc: location,
         });
         router.push(`/confirm?${params.toString()}`);
-      } else {
+      } else if (res.status === 404) {
+        // Genuinely a new member — send to registration.
         const params = new URLSearchParams({ phone: cleaned, loc: location });
         router.push(`/register?${params.toString()}`);
+      } else {
+        // Lookup FAILED (server/network issue) — don't assume they're new,
+        // or existing members end up re-registering as duplicates.
+        setError("Something went wrong looking you up. Please try again.");
+        setLoading(false);
       }
     } catch {
-      const params = new URLSearchParams({ phone: cleaned, loc: location });
-      router.push(`/register?${params.toString()}`);
-    } finally {
+      setError(
+        "Couldn't connect — please check your internet and try again."
+      );
       setLoading(false);
     }
   };

@@ -56,33 +56,28 @@ function RegisterForm() {
         body: JSON.stringify({ phone, location, ...form }),
       });
 
-      let uniqueId = "";
-      let checkinTime = new Date().toISOString();
-      try {
-        const result = await res.json();
-        uniqueId = result.uniqueId || "";
-        checkinTime = result.checkinTime || checkinTime;
-      } catch {
-        /* ignore */
+      if (!res.ok) {
+        // Do NOT show success if the registration wasn't recorded.
+        setError("Couldn't complete your registration. Please try again.");
+        setLoading(false);
+        return;
       }
 
+      const result = await res.json();
       const params = new URLSearchParams({
-        name: form.fullName.trim(),
-        returning: "0",
-        time: checkinTime,
-        id: uniqueId,
+        // If this phone was already registered, the server checks the
+        // existing member in instead of creating a duplicate.
+        name: result.name || form.fullName.trim(),
+        returning: result.existing ? "1" : "0",
+        time: result.checkinTime || new Date().toISOString(),
+        id: result.uniqueId || "",
         loc: location,
       });
       router.push(`/success?${params.toString()}`);
     } catch {
-      const params = new URLSearchParams({
-        name: form.fullName.trim(),
-        returning: "0",
-        time: new Date().toISOString(),
-        loc: location,
-      });
-      router.push(`/success?${params.toString()}`);
-    } finally {
+      setError(
+        "Couldn't complete your registration — please check your connection and try again."
+      );
       setLoading(false);
     }
   };

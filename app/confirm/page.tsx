@@ -41,29 +41,33 @@ function ConfirmContent() {
         body: JSON.stringify({ phone, location }),
       });
 
-      let checkinTime = new Date().toISOString();
-      if (res.ok) {
-        const data = await res.json();
-        checkinTime = data.checkinTime || checkinTime;
+      if (!res.ok) {
+        // Do NOT show success if the check-in wasn't recorded.
+        if (res.status === 404) {
+          setError(
+            "We couldn't find your registration. Please go back and start over."
+          );
+        } else {
+          setError("Couldn't check you in. Please try again.");
+        }
+        setConfirming(false);
+        return;
       }
 
+      const data = await res.json();
       const params = new URLSearchParams({
         name,
         returning: "1",
-        time: checkinTime,
+        time: data.checkinTime || new Date().toISOString(),
         id: uniqueId,
         loc: location,
       });
       router.push(`/success?${params.toString()}`);
     } catch {
-      const params = new URLSearchParams({
-        name,
-        returning: "1",
-        time: new Date().toISOString(),
-        id: uniqueId,
-        loc: location,
-      });
-      router.push(`/success?${params.toString()}`);
+      setError(
+        "Couldn't check you in — please check your connection and try again."
+      );
+      setConfirming(false);
     }
   };
 
