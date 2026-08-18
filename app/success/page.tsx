@@ -45,7 +45,10 @@ function SuccessContent() {
       if (left === 0) {
         clearInterval(tick);
         setRedirecting(true);
-        window.location.href = COMMUNITY_URL;
+        // Prefer a new tab so the check-in confirmation stays put. Browsers
+        // block non-gesture popups, so fall back to navigating here.
+        const win = window.open(COMMUNITY_URL, "_blank", "noopener,noreferrer");
+        if (!win) window.location.href = COMMUNITY_URL;
       }
     }, 50);
 
@@ -58,14 +61,14 @@ function SuccessContent() {
   const formattedTime = time ? formatCheckinTime(time) : "";
 
   return (
-    <div className="page-enter mx-auto flex min-h-dvh w-full max-w-[400px] flex-col items-center justify-center text-center gap-10 px-5 py-10">
+    <div className="page-enter mx-auto flex min-h-dvh w-full max-w-[400px] flex-col items-center justify-center text-center gap-6 px-5 py-8">
       {/* Checkmark */}
       <div className="animate-scale-in">
-        <div className="w-24 h-24 rounded-full bg-[var(--accent)]/15 flex items-center justify-center animate-pulse-glow">
-          <div className="w-16 h-16 rounded-full bg-[var(--accent)] flex items-center justify-center">
+        <div className="w-20 h-20 rounded-full bg-[var(--accent)]/15 flex items-center justify-center animate-pulse-glow">
+          <div className="w-14 h-14 rounded-full bg-[var(--accent)] flex items-center justify-center">
             <svg
-              width="32"
-              height="32"
+              width="28"
+              height="28"
               viewBox="0 0 24 24"
               fill="none"
               stroke="#14271f"
@@ -80,7 +83,7 @@ function SuccessContent() {
       </div>
 
       {/* Message */}
-      <div className="space-y-3">
+      <div className="space-y-2">
         <h1 className="text-2xl font-bold">
           {returning ? (
             <>Welcome back, {firstName}!</>
@@ -105,7 +108,100 @@ function SuccessContent() {
         )}
       </div>
 
-      {/* Unified info card */}
+      {/* Community — kept high on the page so it is always visible */}
+      <div className="w-full text-left rounded-xl bg-white/[0.03] border border-[var(--border-subtle)] px-5 py-4 space-y-3">
+        <div className="flex items-start gap-3">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="text-[var(--accent)] shrink-0 mt-0.5"
+          >
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          </svg>
+          <div className="text-sm text-[var(--text-secondary)] leading-relaxed space-y-1.5">
+            <p className="text-[var(--text-primary)] font-medium">
+              Looking for friends to play with?
+            </p>
+            <p>
+              Join our WhatsApp community to find games, players, and events near you.
+            </p>
+          </div>
+        </div>
+
+        {autoJoin ? (
+          <div className="rounded-xl border border-[var(--accent)]/25 bg-[var(--accent)]/[0.07] p-4">
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex min-w-0 items-center gap-2.5">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  className="shrink-0 text-[var(--accent)]"
+                >
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                </svg>
+                <span className="truncate text-sm text-[var(--text-primary)]">
+                  {redirecting
+                    ? "Opening WhatsApp\u2026"
+                    : "Taking you to our community"}
+                </span>
+              </div>
+              {!redirecting && (
+                <span className="shrink-0 text-sm font-semibold tabular-nums text-[var(--accent)]">
+                  {seconds}s
+                </span>
+              )}
+            </div>
+
+            <div className="mt-3 h-[3px] w-full overflow-hidden rounded-full bg-[var(--accent)]/15">
+              <div
+                className="h-full rounded-full bg-[var(--accent)]"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+
+            <a
+              href={COMMUNITY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3.5 block w-full rounded-lg border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-4 py-2 text-center text-xs font-semibold text-[var(--accent)] transition-colors hover:bg-[var(--accent)]/20"
+            >
+              Open now
+            </a>
+          </div>
+        ) : (
+          <a
+            href={COMMUNITY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 w-full px-5 py-2.5 rounded-lg bg-[var(--accent)]/10 border border-[var(--accent)]/30 text-[var(--accent)] font-semibold text-sm hover:bg-[var(--accent)]/20 transition-colors"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+            </svg>
+            Join the community
+          </a>
+        )}
+      </div>
+
+      {/* Info card */}
       <div className="w-full text-left rounded-xl bg-white/[0.03] border border-[var(--border-subtle)] overflow-hidden">
         {/* Row 1: People playing */}
         <div className="flex items-center gap-3 px-5 py-4">
@@ -153,102 +249,6 @@ function SuccessContent() {
               Just tell the facility partner your Stellar ID — return the gear when you&apos;re done playing.
             </p>
           </div>
-        </div>
-
-        <div className="h-px bg-[var(--border-subtle)] mx-5" />
-
-        {/* Row 3: WhatsApp community */}
-        <div className="flex flex-col gap-3 px-5 py-4">
-          <div className="flex items-start gap-3">
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="text-[var(--accent)] shrink-0 mt-0.5"
-            >
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-              <circle cx="9" cy="7" r="4" />
-              <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-            </svg>
-            <div className="text-sm text-[var(--text-secondary)] leading-relaxed space-y-1.5">
-              <p className="text-[var(--text-primary)] font-medium">
-                Looking for friends to play with?
-              </p>
-              <p>
-                Join our WhatsApp community to find games, players, and events near you.
-              </p>
-            </div>
-          </div>
-
-          {autoJoin ? (
-            <div className="w-full rounded-xl border border-[var(--accent)]/25 bg-[var(--accent)]/[0.07] p-4 text-left">
-              <div className="flex items-center justify-between gap-3">
-                <div className="flex min-w-0 items-center gap-2.5">
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    aria-hidden="true"
-                    className="shrink-0 text-[var(--accent)]"
-                  >
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                </svg>
-                  <span className="truncate text-sm text-[var(--text-primary)]">
-                    {redirecting
-                      ? "Opening WhatsApp\u2026"
-                      : "Taking you to our community"}
-                  </span>
-                </div>
-                {!redirecting && (
-                  <span className="shrink-0 text-sm font-semibold tabular-nums text-[var(--accent)]">
-                    {seconds}s
-                  </span>
-                )}
-              </div>
-
-              <div className="mt-3 h-[3px] w-full overflow-hidden rounded-full bg-[var(--accent)]/15">
-                <div
-                  className="h-full rounded-full bg-[var(--accent)]"
-                  style={{ width: `${progress}%` }}
-                />
-              </div>
-
-              <button
-                type="button"
-                onClick={() => {
-                  window.location.href = COMMUNITY_URL;
-                }}
-                className="mt-3.5 w-full rounded-lg border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-4 py-2 text-xs font-semibold text-[var(--accent)] transition-colors hover:bg-[var(--accent)]/20"
-              >
-                Open now
-              </button>
-            </div>
-          ) : (
-            <a
-              href={COMMUNITY_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 w-full px-5 py-2.5 rounded-lg bg-[var(--accent)]/10 border border-[var(--accent)]/30 text-[var(--accent)] font-semibold text-sm hover:bg-[var(--accent)]/20 transition-colors"
-            >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-              </svg>
-              Join the community
-            </a>
-          )}
         </div>
       </div>
     </div>
