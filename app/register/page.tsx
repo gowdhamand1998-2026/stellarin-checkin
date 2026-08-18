@@ -69,6 +69,8 @@ function RegisterForm() {
         // existing member in instead of creating a duplicate.
         name: result.name || form.fullName.trim(),
         returning: result.existing ? "1" : "0",
+        // Auto-redirect to the WhatsApp community only if they opted in.
+        wa: form.whatsappOptIn ? "1" : "0",
         time: result.checkinTime || new Date().toISOString(),
         id: result.uniqueId || "",
         loc: location,
